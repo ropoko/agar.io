@@ -10,23 +10,30 @@ MAIN_CIRCLE = {
     height = 40
 }
 
-local function centralize(obj_width, obj_height)
-	local width = WINDOW_SETTINGS.width
-	local height = WINDOW_SETTINGS.height
+-- local function centralize(obj_width, obj_height)
+-- 	local width = WINDOW_SETTINGS.width
+-- 	local height = WINDOW_SETTINGS.height
 
-	obj_width = obj_width or 0
-	obj_height = obj_height or 0
+-- 	obj_width = obj_width or 0
+-- 	obj_height = obj_height or 0
 
-	local central = {
-		x = ((width - obj_width) / 2),
-		y = ((height - obj_height) / 2)
-	}
+-- 	local central = {
+-- 		x = ((width - obj_width) / 2),
+-- 		y = ((height - obj_height) / 2)
+-- 	}
 
-	return central
-end
+-- 	return central
+-- end
 
 function love.load()
     love.window.setMode(WINDOW_SETTINGS.width, WINDOW_SETTINGS.height, { resizable = true })
+end
+
+function love.update()
+    local x, y = love.mouse.getPosition()
+
+    MAIN_CIRCLE.x = x
+    MAIN_CIRCLE.y = y
 end
 
 function love.draw()
@@ -38,7 +45,3 @@ function love.resize(width, height)
     WINDOW_SETTINGS.height = height
 end
 
-function love.mousemoved(x, y, dx, dy)
-    MAIN_CIRCLE.x = x
-    MAIN_CIRCLE.y = y
-end
