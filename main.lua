@@ -22,21 +22,8 @@ function love.update(dt)
 	local x_distance = mousex - PLAYER.x
 	local y_distance = mousey - PLAYER.y
 
-	local speed = math.sqrt((x_distance)^2 + (y_distance)^2)
-
-	if PLAYER.x < mousex then
-		PLAYER.x = PLAYER.x + (speed * dt)
-	end
-	if PLAYER.x > mousex then
-		PLAYER.x = PLAYER.x - (speed * dt)
-	end
-
-	if PLAYER.y < mousey then
-		PLAYER.y = PLAYER.y + (speed * dt)
-	end
-	if PLAYER.x > mousey then
-		PLAYER.y = PLAYER.y - (speed * dt)
-	end
+	PLAYER.x = PLAYER.x + (x_distance * 0.05)
+	PLAYER.y = PLAYER.y + (y_distance * 0.05)
 end
 
 function love.draw()
