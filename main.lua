@@ -1,13 +1,15 @@
+require('./camera')
+
 WINDOW_SETTINGS = {
-    width = 800,
-    height = 600
+	width = 800,
+	height = 600
 }
 
 MAIN_CIRCLE = {
-    x = 100,
-    y = 100,
-    width = 40,
-    height = 40
+	x = 100,
+	y = 100,
+	width = 40,
+	height = 40
 }
 
 -- local function centralize(obj_width, obj_height)
@@ -26,22 +28,28 @@ MAIN_CIRCLE = {
 -- end
 
 function love.load()
-    love.window.setMode(WINDOW_SETTINGS.width, WINDOW_SETTINGS.height, { resizable = true })
+  camera:setBounds(0, 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
+
+	love.window.setMode(WINDOW_SETTINGS.width, WINDOW_SETTINGS.height, { resizable = true })
 end
 
 function love.update()
-    local x, y = love.mouse.getPosition()
+	local x, y = love.mouse.getPosition()
 
-    MAIN_CIRCLE.x = x
-    MAIN_CIRCLE.y = y
+	MAIN_CIRCLE.x = x
+	MAIN_CIRCLE.y = y
+
+	camera:setPosition(x - WINDOW_SETTINGS.width, y - WINDOW_SETTINGS.height)
 end
 
 function love.draw()
-    love.graphics.ellipse("fill", MAIN_CIRCLE.x, MAIN_CIRCLE.y, MAIN_CIRCLE.width, MAIN_CIRCLE.height)
+	camera:set()
+	love.graphics.ellipse("fill", MAIN_CIRCLE.x, MAIN_CIRCLE.y, MAIN_CIRCLE.width, MAIN_CIRCLE.height)
+	camera:unset()
 end
 
 function love.resize(width, height)
-    WINDOW_SETTINGS.width = width
-    WINDOW_SETTINGS.height = height
+	WINDOW_SETTINGS.width = width
+	WINDOW_SETTINGS.height = height
 end
 

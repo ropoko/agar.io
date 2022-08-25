@@ -1,12 +1,13 @@
-camera = {}
-camera._x = 0
-camera._y = 0
-camera.scaleX = 1
-camera.scaleY = 1
-camera.rotation = 0
+camera = {
+	_x = 0,
+	_y = 0,
+	scaleX = 1,
+	scaleY = 1,
+	rotation = 0
+}
 
 function math.clamp(x, min, max)
-    return x < min and min or (x > max and max or x)
+	return x < min and min or (x > max and max or x)
 end
 
 function camera:set()
