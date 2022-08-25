@@ -1,55 +1,57 @@
-require('./camera')
-
 WINDOW_SETTINGS = {
 	width = 800,
 	height = 600
 }
 
-MAIN_CIRCLE = {
-	x = 100,
-	y = 100,
-	width = 40,
-	height = 40
-}
-
--- local function centralize(obj_width, obj_height)
--- 	local width = WINDOW_SETTINGS.width
--- 	local height = WINDOW_SETTINGS.height
-
--- 	obj_width = obj_width or 0
--- 	obj_height = obj_height or 0
-
--- 	local central = {
--- 		x = ((width - obj_width) / 2),
--- 		y = ((height - obj_height) / 2)
--- 	}
-
--- 	return central
--- end
-
 function love.load()
-  camera:setBounds(0, 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
+	BACKGROUND = love.graphics.newImage('assets/background.jpg')
+
+	PLAYER = {
+		x = 100,
+		y = 100,
+		width = 40,
+		height = 40
+	}
 
 	love.window.setMode(WINDOW_SETTINGS.width, WINDOW_SETTINGS.height, { resizable = true })
 end
 
-function love.update()
-	local x, y = love.mouse.getPosition()
+function love.update(dt)
+	local mousex, mousey = love.mouse.getPosition()
 
-	MAIN_CIRCLE.x = x
-	MAIN_CIRCLE.y = y
+	local x_distance = mousex - PLAYER.x
+	local y_distance = mousey - PLAYER.y
 
-	camera:setPosition(x - WINDOW_SETTINGS.width, y - WINDOW_SETTINGS.height)
+	local speed = math.sqrt((x_distance)^2 + (y_distance)^2)
+
+	if PLAYER.x < mousex then
+		PLAYER.x = PLAYER.x + (speed * dt)
+	end
+	if PLAYER.x > mousex then
+		PLAYER.x = PLAYER.x - (speed * dt)
+	end
+
+	if PLAYER.y < mousey then
+		PLAYER.y = PLAYER.y + (speed * dt)
+	end
+	if PLAYER.x > mousey then
+		PLAYER.y = PLAYER.y - (speed * dt)
+	end
 end
 
 function love.draw()
-	camera:set()
-	love.graphics.ellipse("fill", MAIN_CIRCLE.x, MAIN_CIRCLE.y, MAIN_CIRCLE.width, MAIN_CIRCLE.height)
-	camera:unset()
+	for i = 0, love.graphics.getWidth() / BACKGROUND:getWidth() do
+		love.graphics.setColor(255,255,255)
+		for j = 0, love.graphics.getHeight() / BACKGROUND:getHeight() do
+				love.graphics.draw(BACKGROUND, i * BACKGROUND:getWidth(), j * BACKGROUND:getHeight())
+		end
+	end
+
+	love.graphics.setColor(0,0,0)
+	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
 end
 
 function love.resize(width, height)
 	WINDOW_SETTINGS.width = width
 	WINDOW_SETTINGS.height = height
 end
-
