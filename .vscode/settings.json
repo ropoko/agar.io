@@ -1,6 +1,7 @@
 {
     "Lua.diagnostics.globals": [
-        "love"
+        "love",
+        "camera"
     ],
     "Lua.runtime.version": "LuaJIT",
     "Lua.workspace.library": [
