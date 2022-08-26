@@ -94,7 +94,6 @@ end
 
 function camera:zoom(mul)
 	self.scale = self.scale * mul
-	print('scale', self.scale)
 	return self
 end
 

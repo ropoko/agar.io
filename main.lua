@@ -28,32 +28,40 @@ function love.update(dt)
 
 	local speed = 0.05
 
+	-- print(string.format("x_distance: %d; PLAYER.x: %d = %d", x_distance, PLAYER.x, PLAYER.x + (x_distance * speed)))
+
+	-- print(string.format("mousex: %d - PLAYER.x: %d; = %d", mousex, PLAYER.x, x_distance))
+
 	PLAYER.x = PLAYER.x + (x_distance * speed)
 	PLAYER.y = PLAYER.y + (y_distance * speed)
 
-	camera:move(PLAYER.x - camera.x, PLAYER.y - camera.y)
+	camera:move((PLAYER.x - camera.x), (PLAYER.y - camera.y))
+
+	-- print(string.format("mousex: %d - PLAYER.x: %d; camerax: %d", mousex, PLAYER.x, camera.x))
 end
 
 function love.draw()
-	camera:attach()
-	for i = 0, love.graphics.getWidth() / BACKGROUND:getWidth() do
+	love.graphics.setColor(255,0,0)
+	love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
+
+	for i = 0, WINDOW_SETTINGS.width / BACKGROUND:getWidth() do
 		love.graphics.setColor(255,255,255)
-		for j = 0, love.graphics.getHeight() / BACKGROUND:getHeight() do
+		for j = 0, WINDOW_SETTINGS.height / BACKGROUND:getHeight() do
 			love.graphics.draw(BACKGROUND, i * BACKGROUND:getWidth(), j * BACKGROUND:getHeight())
 		end
 	end
 
-	love.graphics.setColor(0,0,0)
-	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
 	-- only for reference while configuring camera
+	love.graphics.setColor(0,0,0)
 	love.graphics.ellipse("fill", 50, 50, PLAYER.width, PLAYER.height)
 
-	love.graphics.setColor(255,0,0)
-		love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
+	camera:attach()
+	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
 	camera:detach()
 end
 
 function love.resize(width, height)
+	print(width, height)
 	WINDOW_SETTINGS.width = width
 	WINDOW_SETTINGS.height = height
 end
