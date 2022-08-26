@@ -26,24 +26,10 @@ function love.update(dt)
 	local x_distance = mousex - PLAYER.x
 	local y_distance = mousey - PLAYER.y
 
-	-- print(x_distance)
-	-- print(y_distance)
-
 	local speed = 0.05
 
 	PLAYER.x = PLAYER.x + (x_distance * speed)
 	PLAYER.y = PLAYER.y + (y_distance * speed)
-
-	if PLAYER.x > 678 then
-		-- x_distance = 400
-		-- PLAYER.x = 800
-		camera.x = camera.x * PLAYER.x
-	end
-
-	-- print(PLAYER.x)
-	-- print(x_distance)
-
-	-- print(camera.x)
 
 	camera:move(PLAYER.x - camera.x, PLAYER.y - camera.y)
 end
@@ -68,18 +54,15 @@ function love.draw()
 end
 
 function love.resize(width, height)
-	print('resize?')
 	WINDOW_SETTINGS.width = width
 	WINDOW_SETTINGS.height = height
 end
 
 function love.wheelmoved(x,y)
 	if y > 0 then
-		print('zoom')
 		camera:zoom(1.1)
 	end
 	if y < 0 then
-		print('unzoom')
 		camera:zoom(0.9)
 	end
 end
