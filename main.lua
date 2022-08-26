@@ -1,22 +1,23 @@
-require('./camera')
+local Camera = require('./lib/camera')
 
 WINDOW_SETTINGS = {
 	width = 800,
 	height = 600
 }
 
+PLAYER = {
+	x = 100,
+	y = 100,
+	width = 40,
+	height = 40
+}
+
 function love.load()
-	camera:setBounds(0, 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
 	BACKGROUND = love.graphics.newImage('assets/background.jpg')
 
-	PLAYER = {
-		x = 100,
-		y = 100,
-		width = 40,
-		height = 40
-	}
-
 	love.window.setMode(WINDOW_SETTINGS.width, WINDOW_SETTINGS.height, { resizable = true })
+
+	camera = Camera(PLAYER.x, PLAYER.y)
 end
 
 function love.update(dt)
@@ -25,33 +26,30 @@ function love.update(dt)
 	local x_distance = mousex - PLAYER.x
 	local y_distance = mousey - PLAYER.y
 
+	-- print(x_distance)
+	-- print(y_distance)
+
 	local speed = 0.05
 
 	PLAYER.x = PLAYER.x + (x_distance * speed)
 	PLAYER.y = PLAYER.y + (y_distance * speed)
 
-	local screen_center_x = WINDOW_SETTINGS.width / 2
-	local screen_center_y = WINDOW_SETTINGS.height / 2
+	if PLAYER.x > 678 then
+		-- x_distance = 400
+		-- PLAYER.x = 800
+		camera.x = camera.x * PLAYER.x
+	end
 
-	camera:setPosition((screen_center_x - PLAYER.x), (screen_center_y - PLAYER.y))
+	-- print(PLAYER.x)
+	-- print(x_distance)
 
-	-- if PLAYER.x < screen_center_x then
-	-- 	camera:setPosition((screen_center_x - PLAYER.x), (screen_center_y - PLAYER.y))
-	-- end
-	-- if PLAYER.x > mousex then
-	-- 	camera:setPosition(((WINDOW_SETTINGS.width / 2) - PLAYER.x), ((WINDOW_SETTINGS.height / 2) - PLAYER.y))
-	-- end
+	-- print(camera.x)
 
-	-- if PLAYER.y < mousey then
-	-- 	camera:setPosition(((WINDOW_SETTINGS.width / 2) - PLAYER.x), ((WINDOW_SETTINGS.height / 2) - PLAYER.y))
-	-- end
-	-- if PLAYER.x > mousey then
-	-- 	camera:setPosition(((WINDOW_SETTINGS.width / 2) - PLAYER.x), ((WINDOW_SETTINGS.height / 2) - PLAYER.y))
-	-- end
+	camera:move(PLAYER.x - camera.x, PLAYER.y - camera.y)
 end
 
 function love.draw()
-	camera:set()
+	camera:attach()
 	for i = 0, love.graphics.getWidth() / BACKGROUND:getWidth() do
 		love.graphics.setColor(255,255,255)
 		for j = 0, love.graphics.getHeight() / BACKGROUND:getHeight() do
@@ -63,10 +61,25 @@ function love.draw()
 	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
 	-- only for reference while configuring camera
 	love.graphics.ellipse("fill", 50, 50, PLAYER.width, PLAYER.height)
-	camera:unset()
+
+	love.graphics.setColor(255,0,0)
+		love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
+	camera:detach()
 end
 
 function love.resize(width, height)
+	print('resize?')
 	WINDOW_SETTINGS.width = width
 	WINDOW_SETTINGS.height = height
+end
+
+function love.wheelmoved(x,y)
+	if y > 0 then
+		print('zoom')
+		camera:zoom(1.1)
+	end
+	if y < 0 then
+		print('unzoom')
+		camera:zoom(0.9)
+	end
 end
