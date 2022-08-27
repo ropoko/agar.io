@@ -23,20 +23,24 @@ end
 function love.update(dt)
 	local mousex, mousey = love.mouse.getPosition()
 
-	local x_distance = mousex - PLAYER.x
-	local y_distance = mousey - PLAYER.y
+	local camerax, cameray = camera:cameraCoords(PLAYER.x, PLAYER.y)
+
+	local x_distance = mousex - camerax
+	local y_distance = mousey - cameray
 
 	local speed = 0.05
 
 	-- print(string.format("x_distance: %d; PLAYER.x: %d = %d", x_distance, PLAYER.x, PLAYER.x + (x_distance * speed)))
 
-	print(string.format("mousex: %d - PLAYER.x: %d; = %d", mousex, PLAYER.x, x_distance))
+	-- print(string.format("mousex: %d - PLAYER.x: %d; = %d", mousex, PLAYER.x, x_distance))
 
 	PLAYER.x = PLAYER.x + (x_distance * speed)
 	PLAYER.y = PLAYER.y + (y_distance * speed)
 
-	camera:move((PLAYER.x - camera.x), (PLAYER.y - camera.y))
+	print(PLAYER.x, PLAYER.y)
 
+	camera:move((PLAYER.x - camera.x), (PLAYER.y - camera.y))
+	-- camera:mousePosition()
 	-- print(string.format("mousex: %d - PLAYER.x: %d; camerax: %d", mousex, PLAYER.x, camera.x))
 end
 
@@ -50,7 +54,7 @@ function love.draw()
 
 	camera:attach()
 	love.graphics.setColor(255,0,0)
-	love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width + 500, WINDOW_SETTINGS.height + 500)
+	love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
 
 	love.graphics.setColor(0,0,0)
 	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
@@ -58,7 +62,6 @@ function love.draw()
 end
 
 function love.resize(width, height)
-	print(width, height)
 	WINDOW_SETTINGS.width = width
 	WINDOW_SETTINGS.height = height
 end
