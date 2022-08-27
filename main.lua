@@ -22,8 +22,9 @@ local FOOD = {
 	size = 10,
 	points = 1,
 	alive = 0,
-	position = {},
-	count = 1000
+	config = {},
+	count = 1000,
+	color = ''
 }
 
 function love.load()
@@ -71,15 +72,17 @@ function love.update(dt)
 			local x = love.math.random(0, LIMIT_AREA.width)
 			local y = love.math.random(0, LIMIT_AREA.height)
 
-			table.insert(FOOD.position, { x = x, y = y })
+			local color = Utils.random_color()
+
+			table.insert(FOOD.config, { x = x, y = y, r = color.r, g = color.g, b = color.b })
 		end
 	end
 
-	for k,v in pairs(FOOD.position) do
+	for k,v in pairs(FOOD.config) do
 		if Utils.has_collision(v.x, v.y, FOOD.size, FOOD.size,
 		PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height) then
 			PLAYER.width, PLAYER.height = PLAYER.width * 1.02, PLAYER.height * 1.02
-			table.remove(FOOD.position, k)
+			table.remove(FOOD.config, k)
 		end
 	end
 
@@ -96,7 +99,8 @@ function love.draw()
 
 	camera:attach()
 	-- draw the food
-	for k,v in pairs(FOOD.position) do
+	for k,v in pairs(FOOD.config) do
+		-- love.graphics.setColor(v.r, v.g, v.b, 255)
 		love.graphics.setColor(0,0,0)
 		love.graphics.ellipse('fill', v.x, v.y, FOOD.size, FOOD.size)
 	end
