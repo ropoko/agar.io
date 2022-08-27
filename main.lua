@@ -8,13 +8,21 @@ local WINDOW_SETTINGS = {
 local PLAYER = {
 	x = 500,
 	y = 500,
-	width = 40,
-	height = 40
+	width = 25,
+	height = 25
 }
 
 local LIMIT_AREA = {
 	width = WINDOW_SETTINGS.width * 10,
 	height = WINDOW_SETTINGS.height * 10
+}
+
+local FOOD = {
+	size = 10,
+	points = 1,
+	alive = 0,
+	position = {},
+	count = 1000
 }
 
 function love.load()
@@ -55,6 +63,17 @@ function love.update(dt)
 		PLAYER.y = LIMIT_AREA.height
 	end
 
+	if FOOD.alive <= FOOD.count then
+		for i=1, FOOD.count - FOOD.alive do
+			FOOD.alive = FOOD.alive + 1
+
+			local x = love.math.random(0, LIMIT_AREA.width)
+			local y = love.math.random(0, LIMIT_AREA.height)
+
+			table.insert(FOOD.position, { x = x, y = y })
+		end
+	end
+
 	camera:move((PLAYER.x - camera.x), (PLAYER.y - camera.y))
 end
 
@@ -67,6 +86,12 @@ function love.draw()
 	end
 
 	camera:attach()
+	-- draw the food
+	for k,v in pairs(FOOD.position) do
+		love.graphics.setColor(0,0,0)
+		love.graphics.ellipse('fill', v.x, v.y, FOOD.size, FOOD.size)
+	end
+
 	love.graphics.setColor(255,0,0)
 	love.graphics.rectangle('line', 0 , 0, LIMIT_AREA.width, LIMIT_AREA.height)
 
