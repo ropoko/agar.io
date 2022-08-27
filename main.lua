@@ -30,18 +30,10 @@ function love.update(dt)
 
 	local speed = 0.05
 
-	-- print(string.format("x_distance: %d; PLAYER.x: %d = %d", x_distance, PLAYER.x, PLAYER.x + (x_distance * speed)))
-
-	-- print(string.format("mousex: %d - PLAYER.x: %d; = %d", mousex, PLAYER.x, x_distance))
-
 	PLAYER.x = PLAYER.x + (x_distance * speed)
 	PLAYER.y = PLAYER.y + (y_distance * speed)
 
-	print(PLAYER.x, PLAYER.y)
-
 	camera:move((PLAYER.x - camera.x), (PLAYER.y - camera.y))
-	-- camera:mousePosition()
-	-- print(string.format("mousex: %d - PLAYER.x: %d; camerax: %d", mousex, PLAYER.x, camera.x))
 end
 
 function love.draw()
@@ -54,7 +46,7 @@ function love.draw()
 
 	camera:attach()
 	love.graphics.setColor(255,0,0)
-	love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width, WINDOW_SETTINGS.height)
+	love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width * 10, WINDOW_SETTINGS.height * 10)
 
 	love.graphics.setColor(0,0,0)
 	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
