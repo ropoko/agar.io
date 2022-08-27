@@ -1,15 +1,20 @@
 local Camera = require('./lib/camera')
 
-WINDOW_SETTINGS = {
+local WINDOW_SETTINGS = {
 	width = 800,
 	height = 600
 }
 
-PLAYER = {
-	x = 100,
-	y = 100,
+local PLAYER = {
+	x = 500,
+	y = 500,
 	width = 40,
 	height = 40
+}
+
+local LIMIT_AREA = {
+	width = WINDOW_SETTINGS.width * 10,
+	height = WINDOW_SETTINGS.height * 10
 }
 
 function love.load()
@@ -33,6 +38,23 @@ function love.update(dt)
 	PLAYER.x = PLAYER.x + (x_distance * speed)
 	PLAYER.y = PLAYER.y + (y_distance * speed)
 
+	-- define the borders that cannot be passed
+	if PLAYER.x >= LIMIT_AREA.width then
+		PLAYER.x = LIMIT_AREA.width
+	end
+
+	if PLAYER.x <= 0 then
+		PLAYER.x = 0
+	end
+
+	if PLAYER.y <= 0 then
+		PLAYER.y = 0
+	end
+
+	if PLAYER.y >= LIMIT_AREA.height then
+		PLAYER.y = LIMIT_AREA.height
+	end
+
 	camera:move((PLAYER.x - camera.x), (PLAYER.y - camera.y))
 end
 
@@ -46,7 +68,7 @@ function love.draw()
 
 	camera:attach()
 	love.graphics.setColor(255,0,0)
-	love.graphics.rectangle('line', 0 , 0, WINDOW_SETTINGS.width * 10, WINDOW_SETTINGS.height * 10)
+	love.graphics.rectangle('line', 0 , 0, LIMIT_AREA.width, LIMIT_AREA.height)
 
 	love.graphics.setColor(0,0,0)
 	love.graphics.ellipse("fill", PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height)
