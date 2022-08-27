@@ -78,6 +78,7 @@ function love.update(dt)
 	for k,v in pairs(FOOD.position) do
 		if Utils.has_collision(v.x, v.y, FOOD.size, FOOD.size,
 		PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height) then
+			PLAYER.width, PLAYER.height = PLAYER.width * 1.02, PLAYER.height * 1.02
 			table.remove(FOOD.position, k)
 		end
 	end
