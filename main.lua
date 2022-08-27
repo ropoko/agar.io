@@ -1,4 +1,5 @@
 local Camera = require('./lib/camera')
+local Utils = require('./utils')
 
 local WINDOW_SETTINGS = {
 	width = 800,
@@ -71,6 +72,13 @@ function love.update(dt)
 			local y = love.math.random(0, LIMIT_AREA.height)
 
 			table.insert(FOOD.position, { x = x, y = y })
+		end
+	end
+
+	for k,v in pairs(FOOD.position) do
+		if Utils.has_collision(v.x, v.y, FOOD.size, FOOD.size,
+		PLAYER.x, PLAYER.y, PLAYER.width, PLAYER.height) then
+			table.remove(FOOD.position, k)
 		end
 	end
 
