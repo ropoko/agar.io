@@ -100,8 +100,7 @@ function love.draw()
 	camera:attach()
 	-- draw the food
 	for k,v in pairs(FOOD.config) do
-		-- love.graphics.setColor(v.r, v.g, v.b, 255)
-		love.graphics.setColor(0,0,0)
+		love.graphics.setColor(v.r, v.g, v.b)
 		love.graphics.ellipse('fill', v.x, v.y, FOOD.size, FOOD.size)
 	end
 
